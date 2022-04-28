@@ -164,6 +164,7 @@ if response.ok:
     soup = BeautifulSoup(response.text, 'html.parser')
 
 book_infos = {} #Création du dictionnaire
+book_infos["product_page_url"] = url_book #Ajout au dictionnaire
 
 # Récupérer des infos contenues dans une table
 table_book_infos = soup.find('table', {'class':'table table-striped'})
@@ -199,6 +200,22 @@ book_desc = soup.find('article', {'class':'product_page'})
 p_text = book_desc.find('p', {'class':''}).get_text()
 #p_text = p_text.replace('â','\"')
 book_infos["product_description"] = p_text #Ajout au dictionnaire
+
+# Recupération du rating du livre
+book_rate = "0"
+if soup.find('p', {'class':'star-rating One'}):
+    book_rate = "1"
+if soup.find('p', {'class':'star-rating Two'}):
+    book_rate = "2"
+if soup.find('p', {'class':'star-rating Three'}):
+    book_rate = "3"
+if soup.find('p', {'class':'star-rating Four'}):
+    book_rate = "4"
+if soup.find('p', {'class':'star-rating Five'}):
+    book_rate = "5"
+
+print(book_rate)
+book_infos["rating"] = book_rate #Ajout au dictionnaire
 
 # Recupération de la category du livre et du titre
 book_infos_in_list = soup.find('ul', {'class':'breadcrumb'})
